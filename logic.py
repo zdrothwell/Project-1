@@ -1,36 +1,45 @@
+from typing import Union, Any
+
 from PyQt6.QtWidgets import *
 from gui import *
 import random
 
 
-def add(values):
+def add(values) -> int:
+    """This just adds all positive numbers.
+    If there is a negative number, it will ignore it and continue.
+    It then returns the total sum of the numbers."""
     num_sum = 0
-    list = []
+    num_list = []
     for x in values:
-        list.append(int(x))
-    for num in list:
+        num_list.append(int(x))
+    for num in num_list:
         if num > 0:
             num_sum += num
     return num_sum
 
 
-def subtract(values):
+def subtract(values) -> int:
+    """This only subtracts negative numbers from each other.
+    If there is a positive number, it ignores the input and moves on to the next.
+    It then returns the total difference"""
     num_sum = 0
-    list = []
+    num_list = []
     for x in values:
-        list.append(int(x))
-    for num in list:
+        num_list.append(int(x))
+    for num in num_list:
         if num < 0:
             num_sum += num
     return num_sum
 
 
-def multiply(values):
+def multiply(values) -> int:
+    """This multiplies all the numbers in the input to become a single product"""
     product = 1
-    list = []
+    num_list = []
     for x in values:
-        list.append(int(x))
-    for num in list:
+        num_list.append(int(x))
+    for num in num_list:
         if num != 0:
             product *= num
         else:
@@ -38,47 +47,55 @@ def multiply(values):
     return product
 
 
-def divide(values):
-    list = []
+def divide(values) -> Union[Union[str, int, float], Any]:
+    """This divides the first number by the proceeding numbers in the input
+    If the list contains a zero at all, it will return that you cannot divide by zero"""
+    num_list = []
     for x in values:
-        list.append(int(x))
-    if list[0] == 0:
+        num_list.append(int(x))
+    if num_list[0] == 0:
         quotient = 0
     else:
-        quotient = list[0]
-        del list[0]
-    for num in list:
-        if num == 0:
-            sys.exit('Cannot divide by 0')
-        else:
+        quotient = num_list[0]
+        del num_list[0]
+    for num in num_list:
+        if num != 0:
             quotient = quotient / num
+        else:
+            return 'Cannot divide by zero'
     return quotient
 
 
-def choose(values):
-    list = []
+def choose(values) -> int:
+    """This chooses a number at random from the list created in the input box"""
+    num_list = []
     for x in values:
-        list.append(int(x))
-    random_index = random.randint(0, len(list) - 1)
-    random_num = list[random_index]
+        num_list.append(int(x))
+    random_index = random.randint(0, len(num_list) - 1)
+    random_num = num_list[random_index]
     return random_num
 
 
 class Logic(QMainWindow, Ui_MainWindow):
-    def __init__(self):
+    def __init__(self) -> None:
+        """All this code does is initialize the class for the logic to use the PyQT window that I
+        created using PyQT Designer. It also fixes the size so that it is non-adjustable"""
         super().__init__()
         self.setupUi(self)
         self.clearButton.clicked.connect(self.clear_input)
         self.submitButton.clicked.connect(self.submit_button)
         self.setFixedSize(800, 600)
-        self.inputList = []
 
-    def clear_input(self):
+    def clear_input(self) -> None:
+        """This just clears the output text box and input text box,
+         there isn't anything else that needs to be cleared between uses"""
         self.errorLabelOutput.setText('')
         self.lineEdit.clear()
         return
 
-    def submit_button(self):
+    def submit_button(self) -> None:
+        """This is where the fun happens: it checks to find which radiobutton
+        is checked and then computes based on the list created from the input box"""
         try:
             userInput = self.lineEdit.text().strip().split()
             if self.addRadio.isChecked():
@@ -99,5 +116,9 @@ class Logic(QMainWindow, Ui_MainWindow):
             else:
                 self.errorLabelOutput.setText(f'You need to select a operator')
         except ValueError:
+            """This only triggers if you input something that is not an integer"""
             self.errorLabelOutput.setText(f'Your input should contain only numbers separated by spaces')
+
+    def setWindowTitle(self, param):
+        pass
 
