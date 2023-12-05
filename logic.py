@@ -5,77 +5,6 @@ from gui import *
 import random
 
 
-def add(values) -> int:
-    """This just adds all positive numbers.
-    If there is a negative number, it will ignore it and continue.
-    It then returns the total sum of the numbers."""
-    num_sum = 0
-    num_list = []
-    for x in values:
-        num_list.append(int(x))
-    for num in num_list:
-        if num > 0:
-            num_sum += num
-    return num_sum
-
-
-def subtract(values) -> int:
-    """This only subtracts negative numbers from each other.
-    If there is a positive number, it ignores the input and moves on to the next.
-    It then returns the total difference"""
-    num_sum = 0
-    num_list = []
-    for x in values:
-        num_list.append(int(x))
-    for num in num_list:
-        if num < 0:
-            num_sum += num
-    return num_sum
-
-
-def multiply(values) -> int:
-    """This multiplies all the numbers in the input to become a single product"""
-    product = 1
-    num_list = []
-    for x in values:
-        num_list.append(int(x))
-    for num in num_list:
-        if num != 0:
-            product *= num
-        else:
-            product = 0
-    return product
-
-
-def divide(values) -> Union[Union[str, int, float], Any]:
-    """This divides the first number by the proceeding numbers in the input
-    If the list contains a zero at all, it will return that you cannot divide by zero"""
-    num_list = []
-    for x in values:
-        num_list.append(int(x))
-    if num_list[0] == 0:
-        quotient = 0
-    else:
-        quotient = num_list[0]
-        del num_list[0]
-    for num in num_list:
-        if num != 0:
-            quotient = quotient / num
-        else:
-            return 'Cannot divide by zero'
-    return quotient
-
-
-def choose(values) -> int:
-    """This chooses a number at random from the list created in the input box"""
-    num_list = []
-    for x in values:
-        num_list.append(int(x))
-    random_index = random.randint(0, len(num_list) - 1)
-    random_num = num_list[random_index]
-    return random_num
-
-
 class Logic(QMainWindow, Ui_MainWindow):
     def __init__(self) -> None:
         """All this code does is initialize the class for the logic to use the PyQT window that I
@@ -99,19 +28,19 @@ class Logic(QMainWindow, Ui_MainWindow):
         try:
             userInput = self.lineEdit.text().strip().split()
             if self.addRadio.isChecked():
-                output = add(userInput)
+                output = self.add(userInput)
                 self.errorLabelOutput.setText(f'The sum of those numbers is: {output}')
             elif self.subtractRadio.isChecked():
-                output = subtract(userInput)
+                output = self.subtract(userInput)
                 self.errorLabelOutput.setText(f'The difference of those numbers is: {output}')
             elif self.multiplyRadio.isChecked():
-                output = multiply(userInput)
+                output = self.multiply(userInput)
                 self.errorLabelOutput.setText(f'The product of those numbers is: {output}')
             elif self.divideRadio.isChecked():
-                output = divide(userInput)
+                output = self.divide(userInput)
                 self.errorLabelOutput.setText(f'The quotient of those answers is: {output}')
             elif self.chooseRadio.isChecked():
-                output = choose(userInput)
+                output = self.choose(userInput)
                 self.errorLabelOutput.setText(f'Your random number is: {output}')
             else:
                 self.errorLabelOutput.setText(f'You need to select a operator')
@@ -121,4 +50,70 @@ class Logic(QMainWindow, Ui_MainWindow):
 
     def setWindowTitle(self, param):
         pass
+
+    def add(self, values) -> int:
+        """This just adds all positive numbers.
+        If there is a negative number, it will ignore it and continue.
+        It then returns the total sum of the numbers."""
+        num_sum = 0
+        num_list = []
+        for x in values:
+            num_list.append(int(x))
+        for num in num_list:
+            if num > 0:
+                num_sum += num
+        return num_sum
+
+    def subtract(self, values) -> int:
+        """This only subtracts negative numbers from each other.
+        If there is a positive number, it ignores the input and moves on to the next.
+        It then returns the total difference"""
+        num_sum = 0
+        num_list = []
+        for x in values:
+            num_list.append(int(x))
+        for num in num_list:
+            if num < 0:
+                num_sum += num
+        return num_sum
+
+    def multiply(self, values) -> int:
+        """This multiplies all the numbers in the input to become a single product"""
+        product = 1
+        num_list = []
+        for x in values:
+            num_list.append(int(x))
+        for num in num_list:
+            if num != 0:
+                product *= num
+            else:
+                product = 0
+        return product
+
+    def divide(self, values) -> Union[Union[str, int, float], Any]:
+        """This divides the first number by the proceeding numbers in the input
+        If the list contains a zero at all, it will return that you cannot divide by zero"""
+        num_list = []
+        for x in values:
+            num_list.append(int(x))
+        if num_list[0] == 0:
+            quotient = 0
+        else:
+            quotient = num_list[0]
+            del num_list[0]
+        for num in num_list:
+            if num != 0:
+                quotient = quotient / num
+            else:
+                return 'Cannot divide by zero'
+        return quotient
+
+    def choose(self, values) -> int:
+        """This chooses a number at random from the list created in the input box"""
+        num_list = []
+        for x in values:
+            num_list.append(int(x))
+        random_index = random.randint(0, len(num_list) - 1)
+        random_num = num_list[random_index]
+        return random_num
 
